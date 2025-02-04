@@ -46,10 +46,18 @@ namespace GameForum.Controllers
         }
 
         // GET: Comments/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            ViewData["DiscussionId"] = new SelectList(_context.Discussion, "DiscussionId", "DiscussionId");
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["DiscussionId"] = id;
             return View();
+
+            //ViewData["DiscussionId"] = new SelectList(_context.Discussion, "DiscussionId", "DiscussionId");
+            //return View();
         }
 
         // POST: Comments/Create
@@ -63,7 +71,8 @@ namespace GameForum.Controllers
             {
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Redirect to the "Get Discussion" page (to be created in another task)
+                return RedirectToAction("Details", "Discussions", new { id = comment.DiscussionId });
             }
             ViewData["DiscussionId"] = new SelectList(_context.Discussion, "DiscussionId", "DiscussionId", comment.DiscussionId);
             return View(comment);
