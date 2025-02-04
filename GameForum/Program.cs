@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using GameForum.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<GameForumContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GameForumContext") ?? throw new InvalidOperationException("Connection string 'GameForumContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
