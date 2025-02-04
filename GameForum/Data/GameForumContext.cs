@@ -15,5 +15,6 @@ namespace GameForum.Data
         }
 
         public DbSet<GameForum.Models.Discussion> Discussion { get; set; } = default!;
+        public DbSet<GameForum.Models.Comment> Comment { get; set; } = default!;
     }
 }
