@@ -1,0 +1,52 @@
+﻿@model GameForum.Models.Discussion
+
+@*
+@{
+	ViewData["Title"] = "Detail";
+}
+*@
+
+<h1>DiscussionDetail</h1>
+
+<table>
+	<tr>
+		<td>
+			<h4>Discussion</h4>
+		</td>
+		<td>
+			<hr />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			@Html.DisplayNameFor(model => model.Title)
+		</td>
+		<td>
+			@Html.DisplayFor(model => model.Title)
+		</td>
+	</tr>
+	<tr>
+		<td>
+			@Html.DisplayNameFor(model => model.Content)
+		</td>
+		<td>
+			@Html.DisplayFor(model => model.Content)
+		</td>
+	</tr>
+	<tr>
+		<td>
+			@Html.DisplayNameFor(model => model.ImageFilename)
+		</td>
+		<td>
+			@Html.DisplayFor(model => model.ImageFilename)
+		</td>
+	</tr>
+	<tr>
+		<td>
+			@Html.DisplayNameFor(model => model.CreateDate)
+		</td>
+		<td>
+			@Html.DisplayFor(model => model.CreateDate)
+		</td>
+	</tr>
+</table>
