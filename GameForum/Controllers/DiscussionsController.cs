@@ -14,6 +14,7 @@ namespace GameForum.Controllers
     {
         private readonly GameForumContext _context;
 
+        // Constructor
         public DiscussionsController(GameForumContext context)
         {
             _context = context;
