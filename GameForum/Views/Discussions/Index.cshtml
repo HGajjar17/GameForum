@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.ImageFile)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
@@ -31,6 +34,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                <img src="/photos/@item.ImageFilename" alt="Photo" class="thumbnail" />
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
@@ -43,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.CreateDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DiscussionId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DiscussionId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DiscussionId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.DiscussionId"><i class="fa-solid fa-pen-to-square"></i></a> |
+                <a asp-action="Details" asp-route-id="@item.DiscussionId"><i class="fa-solid fa-circle-info"></i></a> |
+                <a asp-action="Delete" asp-route-id="@item.DiscussionId"><i class="fa-solid fa-trash"></i></a>
             </td>
         </tr>
 }

@@ -1,0 +1,36 @@
+﻿@model GameForum.Models.Discussion
+
+@{
+    ViewBag.Title = @Model.Title;
+}
+
+<div class="container my-4">
+    <h1>@Model.Title</h1>
+    <p><strong>Created on:</strong> @Model.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</p>
+
+    @if (!string.IsNullOrEmpty(Model.ImageFilename))
+    {
+        @* <img src="~/images/@Model.ImageFilename" alt="Discussion Image" class="img-fluid mb-3"> *@
+        <img src="~/photos/@Model.ImageFilename" alt="@Model.Title" class="me-2" style="width: 150px;">
+
+    }
+
+    <p>@Model.Content</p>
+
+    <hr />
+    <h4>Comments @Model.Comments?.Count()</h4>
+
+    <div class="list-group">
+        @foreach (var comment in Model.Comments ?? new List<GameForum.Models.Comment>())
+        {
+            <div class="list-group-item">
+                <p>@comment.Content</p>
+                <small class="text-muted">Posted on: @comment.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</small>
+            </div>
+        }
+    </div>
+    <div>
+    <a asp-action="Create" asp-controller="Comments" asp-route-discussionId="@Model.DiscussionId" class="btn btn-primary">Add Comment</a>
+
+    </div>
+</div>

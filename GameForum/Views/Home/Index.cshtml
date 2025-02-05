@@ -1,22 +1,66 @@
-﻿@model List<GameForum.Models.Discussion>;
+﻿@model List<GameForum.Models.Discussion>
 
 @{
-	ViewBag.Title = "Home Page";
+    ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-	<h1>Game Forum</h1>
-	<p class="lead">Welcome to the Game Forum! Here you can discuss your favorite games with other users.</p>
+<!-- Hero Section -->
+<header class="hero-section">
+    <h2>Welcome to GAME ZONE</h2>
+    <p class="mb-3">The Ultimate Gaming Community. Join the Discussion!</p>
+</header>
+
+
+<div class="container my-4">
+    <div class="row">
+        <!-- Main Content (Discussions List) -->
+        <div class="col-lg-9">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">Discussions</div>
+                <div class="list-group list-group-flush">
+                    @foreach (var discussion in Model)
+                    {
+                        <a href="@Url.Action("GetDiscussion", "Home", new { id = discussion.DiscussionId })" class="list-group-item">
+                            <!-- Display Image Thumbnail -->
+                            @if (!string.IsNullOrEmpty(discussion.ImageFilename))
+                            {
+                                <img src="~/photos/@discussion.ImageFilename" alt="@discussion.Title" class="img-thumbnail me-2" style="width: 85px;">   
+                            }
+                            <strong>@discussion.Title</strong>
+                            <div class="mt-1">
+                                <small class="text-muted">
+                                    Created on: @discussion.CreateDate.ToString("MMM dd, yyyy hh:mm tt") |
+                                    Comments: @discussion.Comments?.Count()
+                                </small>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-dark">Online Statistics</div>
+                <div class="card-body">
+                    <p>Members online: <strong>516</strong></p>
+                    <p>Guests online: <strong>14,022</strong></p>
+                    <p>Total visitors: <strong>14,538</strong></p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">Top Discussions</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">🔥 <strong>New Game Release</strong> - Explore now!</li>
+                    <li class="list-group-item">📢 <strong>Popular Topics</strong> - Check the buzz!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-	@foreach (var discussion in Model)
-	{
-		<div class="col-md-4">
-			<h2>@discussion.Title</h2>
-			<p>@discussion.Content</p>
-			<p><a class="btn btn-default" href="@Url.Action("Details", "Home", new { id = discussion.DiscussionId })">View details &raquo;</a></p>
-		</div>
-	}
-</div>
-
+<footer class="text-center text-light bg-dark py-3">
+    <p>© 2025 GameZone | <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+</footer>
