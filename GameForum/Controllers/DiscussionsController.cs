@@ -73,7 +73,10 @@ namespace GameForum.Controllers
                 return NotFound();
             }
 
-            var discussion = await _context.Discussion.FindAsync(id);
+            // Include related comments when fetching the discussion
+            var discussion = await _context.Discussion.Include(m => m.Comments).FirstOrDefaultAsync(m => m.DiscussionId == id);
+
+
             if (discussion == null)
             {
                 return NotFound();

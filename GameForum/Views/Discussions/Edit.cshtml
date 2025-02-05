@@ -38,6 +38,17 @@
             </div>
             <div>
 				<a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="pe-2">Add Comments</a>
+                <a asp-controller="Comments" asp-action="Index" asp-route-id="@Model.DiscussionId">View Comments</a>
+                @if (Model.Comments != null)
+                {
+                    foreach (var comment in Model.Comments)
+                    {
+                        <div>
+                            <p>@comment.Content</p>
+                            <p>@comment.CreateDate</p>
+                        </div>
+                    }
+                }
             </div>
         </form>
     </div>
