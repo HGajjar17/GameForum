@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameForum.Models
 {
@@ -17,6 +18,12 @@ namespace GameForum.Models
         [Display(Name = "Image Filename")]
         // Filename for uploaded image
         public string ImageFilename { get; set; } = string.Empty;
+
+        // Property for file uploda, not mapped in EF
+        [NotMapped]
+        [Display(Name = "Upload Image")]
+        // File for upload image
+        public IFormFile? ImageFile { get; set; } // nullable
 
         [Display(Name = "Create Date")]
         // Date when discussion was created
