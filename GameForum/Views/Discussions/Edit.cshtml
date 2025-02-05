@@ -4,9 +4,8 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edit Discussion</h1>
 
-<h4>Discussion</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -37,8 +36,8 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
             <div>
-				<a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="pe-2">Add Comments</a>
-                <a asp-controller="Comments" asp-action="Index" asp-route-id="@Model.DiscussionId">View Comments</a>
+				<a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="btn btn-primary pe-2">Add Comments</a>
+                @* <a asp-controller="Comments" asp-action="Index" asp-route-id="@Model.DiscussionId" class="btn btn-primary pe-2">View Comments</a> *@
                 @if (Model.Comments != null)
                 {
                     foreach (var comment in Model.Comments)
