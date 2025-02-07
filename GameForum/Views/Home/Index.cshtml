@@ -5,7 +5,7 @@
 }
 
 <!-- Hero Section -->
-<header class="hero-section">
+<header class="hero-section bg-dark text-white text-center p-4 mb-4">
     <h2>Welcome to GAME ZONE</h2>
     <p class="mb-3">The Ultimate Gaming Community. Join the Discussion!</p>
 </header>
@@ -16,28 +16,38 @@
         <!-- Main Content (Discussions List) -->
         <div class="col-lg-9">
             <div class="card mb-4">
-                <div class="card-header bg-primary text-white">Discussions</div>
+                <div class="card-header bg-dark text-white">
+                    <h1 class="h4 m-0">All Discussions</h1>
+                </div>
                 <div class="list-group list-group-flush">
                     @foreach (var discussion in Model)
                     {
-                        <a href="@Url.Action("GetDiscussion", "Home", new { id = discussion.DiscussionId })" class="list-group-item">
-                            <!-- Display Image Thumbnail -->
+                        <a href="@Url.Action("GetDiscussion", "Home", new { id = discussion.DiscussionId })" class="list-group-item d-flex align-items-center py-3 discussion-item">
+                            
+                            <!-- Image Thumbnail -->
                             @if (!string.IsNullOrEmpty(discussion.ImageFilename))
                             {
-                                <img src="~/photos/@discussion.ImageFilename" alt="@discussion.Title" class="img-thumbnail me-2" style="width: 85px;">   
+                                <div class="discussion-thumbnail">
+                                    <img src="~/photos/@discussion.ImageFilename" alt="@discussion.Title" />
+                                </div>
                             }
-                            <strong>@discussion.Title</strong>
-                            <div class="mt-1">
-                                <small class="text-muted">
-                                    Created on: @discussion.CreateDate.ToString("MMM dd, yyyy hh:mm tt") |
-                                    Comments: @discussion.Comments?.Count()
-                                </small>
+
+                            <!-- Discussion Title and Info -->
+                            <div class="flex-grow-1 ms-3">
+                                <strong class="discussion-title">@discussion.Title</strong>
+                                <div class="mt-1 text-muted discussion-meta">
+                                    <small class="text-muted">
+                                        <i class="fa-solid fa-calendar-alt me-1"></i> @discussion.CreateDate.ToString("MMM dd, yyyy hh:mm tt")
+                                    </small>
+                                    <i class="fa-solid fa-comments"></i> @discussion.Comments?.Count()
+                                </div>
                             </div>
                         </a>
                     }
                 </div>
             </div>
         </div>
+
 
         <!-- Sidebar -->
         <div class="col-lg-3">

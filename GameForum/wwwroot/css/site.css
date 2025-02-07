@@ -62,3 +62,37 @@ body {
     line-height: 60px; /* Vertically center the text there */
     background-color: #f5f5f5;
 }
+
+/* Discussion Styling */
+
+/* Discussion Item Styling */
+.discussion-item {
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.2s ease;
+}
+
+    .discussion-item:hover {
+        background-color: #f8f9fa;
+    }
+
+/* Thumbnail Styling */
+.discussion-thumbnail img {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Title Styling */
+.discussion-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #212529;
+}
+
+/* Meta Info Styling */
+.discussion-meta {
+    font-size: 0.9rem;
+}
+
+
