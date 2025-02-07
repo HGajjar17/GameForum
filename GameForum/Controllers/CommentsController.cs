@@ -118,11 +118,10 @@ namespace GameForum.Controllers
                 return NotFound();
             }
 
+            // Pass DiscussionId to the view using ViewBag
             ViewData["DiscussionId"] = id;
             return View();
 
-            //ViewData["DiscussionId"] = new SelectList(_context.Discussion, "DiscussionId", "DiscussionId");
-            //return View();
         }
 
         // POST: Comments/Create
@@ -138,7 +137,7 @@ namespace GameForum.Controllers
                 await _context.SaveChangesAsync();
 
                 // re-direct to /Discussions/Edit/{id}
-                return RedirectToAction("Edit", "Discussions", new { id = comment.DiscussionId });
+                return RedirectToAction("GetDiscussion", "Home", new { id = comment.DiscussionId });
             }
             ViewData["DiscussionId"] = new SelectList(_context.Discussion, "DiscussionId", "DiscussionId", comment.DiscussionId);
             return View(comment);

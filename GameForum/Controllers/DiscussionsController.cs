@@ -57,8 +57,11 @@ namespace GameForum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DiscussionId,Title,Content,ImageFile,CreateDate")] Discussion discussion)
+        public async Task<IActionResult> Create([Bind("DiscussionId,Title,Content,ImageFile")] Discussion discussion)
         {
+            // Automatically set the create date to now
+            discussion.CreateDate = DateTime.Now;
+
             // rename the uploaded file to a guid (unique filename). Set before photo saved in database.
             discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile?.FileName);
 
@@ -107,7 +110,7 @@ namespace GameForum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFilename,CreateDate")] Discussion discussion)
+        public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFilename")] Discussion discussion)
         {
             if (id != discussion.DiscussionId)
             {
@@ -118,6 +121,16 @@ namespace GameForum.Controllers
             {
                 try
                 {
+                    // Retrieve the original discussion to preserve CreateDate
+                    var existingDiscussion = await _context.Discussion.AsNoTracking().FirstOrDefaultAsync(d => d.DiscussionId == id);
+                    if (existingDiscussion == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Preserve the original CreateDate
+                    discussion.CreateDate = existingDiscussion.CreateDate;
+
                     _context.Update(discussion);
                     await _context.SaveChangesAsync();
                 }

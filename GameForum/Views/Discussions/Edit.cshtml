@@ -12,6 +12,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="DiscussionId" />
+            <input type="hidden" asp-for="ImageFilename" />
             <div class="mb-3">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -22,6 +23,7 @@
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
+            @*
             <div class="mb-3">
                 <label asp-for="ImageFilename" class="control-label"></label>
                 <input asp-for="ImageFilename" class="form-control" />
@@ -32,12 +34,14 @@
                 <input asp-for="CreateDate" class="form-control" />
                 <span asp-validation-for="CreateDate" class="text-danger"></span>
             </div>
+            *@
             <div class="mb-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-            <div>
+            @*
+            <div class="mb-3">
 				<a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="btn btn-primary pe-2">Add Comments</a>
-                @* <a asp-controller="Comments" asp-action="Index" asp-route-id="@Model.DiscussionId" class="btn btn-primary pe-2">View Comments</a> *@
+                <a asp-controller="Comments" asp-action="Index" asp-route-id="@Model.DiscussionId" class="btn btn-primary pe-2">View Comments</a>
                 @if (Model.Comments != null)
                 {
                     foreach (var comment in Model.Comments)
@@ -49,6 +53,7 @@
                     }
                 }
             </div>
+            *@
         </form>
     </div>
 </div>

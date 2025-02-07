@@ -1,46 +1,23 @@
 ﻿@model GameForum.Models.Discussion
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Discussion Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <img src="@Url.Content("/photos/" + Model.ImageFilename)" alt="@Model.Title" />
+<!-- Add a page header -->
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <h1>Details Discussion</h1>
+    </div>
+    <div class="card-body">
+        <h3>@Model.Title</h3>
+        <img src="@Url.Content("/photos/" + Model.ImageFilename)" alt="@Model.Title" class="img-fluid mb-3" style="max-width: 400px;" />
+        <p>@Model.Content</p>
+        <p class="text-muted">Created on: @Model.CreateDate.ToString("MMMM dd, yyyy hh:mm tt")</p>
+    </div>
 </div>
 
-<div>
-    <h1>Discussion</h1>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageFilename)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageFilename)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreateDate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.DiscussionId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.DiscussionId" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>

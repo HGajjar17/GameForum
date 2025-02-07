@@ -20,7 +20,7 @@
     <hr />
     <h4>Comments @Model.Comments?.Count()</h4>
 
-    <div class="list-group">
+    <div class="list-group mb-3">
         @foreach (var comment in Model.Comments ?? new List<GameForum.Models.Comment>())
         {
             <div class="list-group-item">
@@ -29,8 +29,8 @@
             </div>
         }
     </div>
-    <div>
-    <a asp-action="Create" asp-controller="Comments" asp-route-discussionId="@Model.DiscussionId" class="btn btn-primary">Add Comment</a>
-
+    <div class="mb-3">
+        <a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="btn btn-primary pe-2">Add Comments</a>
+        @* <a asp-action="Create" asp-controller="Comments" asp-route-discussionId="@Model.DiscussionId" class="btn btn-primary">Add Comment</a> *@
     </div>
 </div>
