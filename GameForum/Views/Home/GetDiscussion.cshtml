@@ -4,33 +4,41 @@
     ViewBag.Title = @Model.Title;
 }
 
-<div class="container my-4">
-    <h1>@Model.Title</h1>
-    <p><strong>Created on:</strong> @Model.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</p>
-
-    @if (!string.IsNullOrEmpty(Model.ImageFilename))
-    {
-        @* <img src="~/images/@Model.ImageFilename" alt="Discussion Image" class="img-fluid mb-3"> *@
-        <img src="~/photos/@Model.ImageFilename" alt="@Model.Title" class="me-2" style="width: 150px;">
-
-    }
-
-    <p>@Model.Content</p>
-
-    <hr />
-    <h4>Comments @Model.Comments?.Count()</h4>
-
-    <div class="list-group mb-3">
-        @foreach (var comment in Model.Comments ?? new List<GameForum.Models.Comment>())
-        {
-            <div class="list-group-item">
-                <p>@comment.Content</p>
-                <small class="text-muted">Posted on: @comment.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</small>
-            </div>
-        }
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <h1>Discussion Details</h1>
     </div>
-    <div class="mb-3">
-        <a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="btn btn-primary pe-2">Add Comments</a>
-        @* <a asp-action="Create" asp-controller="Comments" asp-route-discussionId="@Model.DiscussionId" class="btn btn-primary">Add Comment</a> *@
+
+    <div class="card-body">
+        <!-- Discussion Title and Meta Info -->
+        <h3>@Model.Title</h3>
+        <p><strong>Created on:</strong> @Model.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</p>
+
+        <!-- Image Display -->
+        @if (!string.IsNullOrEmpty(Model.ImageFilename))
+        {
+            <img src="~/photos/@Model.ImageFilename" alt="@Model.Title" class="img-thumbnail mb-3" style="max-width: 400px;" />
+        }
+
+        <!-- Content -->
+        <p>@Model.Content</p>
+
+        <!-- Comments Section -->
+        <hr />
+        <h4>Comments (@Model.Comments?.Count() ?? 0)</h4>
+        <div class="list-group mb-3">
+            @foreach (var comment in Model.Comments ?? new List<GameForum.Models.Comment>())
+            {
+                <div class="list-group-item border rounded mb-2 p-3">
+                    <p>@comment.Content</p>
+                    <small class="text-muted">Posted on: @comment.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</small>
+                </div>
+            }
+        </div>
+
+        <!-- Add Comment Button -->
+        <div class="mb-3">
+            <a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="btn btn-primary">Add Comment</a>
+        </div>
     </div>
 </div>

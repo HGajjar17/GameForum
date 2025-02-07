@@ -1,59 +1,74 @@
 ﻿@model IEnumerable<GameForum.Models.Discussion>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Discussions Index";
 }
 
-<h1>Index</h1>
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <h1>All Discussions</h1>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageFile)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageFilename)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <img src="/photos/@item.ImageFilename" alt="Photo" class="thumbnail" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageFilename)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.DiscussionId"><i class="fa-solid fa-pen-to-square"></i></a> |
-                <a asp-action="Details" asp-route-id="@item.DiscussionId"><i class="fa-solid fa-circle-info"></i></a> |
-                <a asp-action="Delete" asp-route-id="@item.DiscussionId"><i class="fa-solid fa-trash"></i></a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="card-body">
+        <p>
+            <a asp-action="Create" class="btn btn-success mb-3">Create New Discussion</a>
+        </p>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Created On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <!-- Thumbnail Image -->
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImageFilename))
+                            {
+                                <img src="/photos/@item.ImageFilename" alt="Thumbnail" class="img-thumbnail" style="max-width: 100px;" />
+                            }
+                        </td>
+
+                        <!-- Title -->
+                        <td>
+                            <strong>@Html.DisplayFor(modelItem => item.Title)</strong>
+                        </td>
+
+                        <!-- Truncated Content -->
+                        <td>
+                            @item.Content.Substring(0, Math.Min(item.Content.Length, 100))...
+                            <a asp-action="Details" asp-route-id="@item.DiscussionId">Read More</a>
+                        </td>
+
+                        <!-- Created Date -->
+                        <td>
+                            @item.CreateDate.ToString("MMMM dd, yyyy")
+                        </td>
+
+                        <!-- Action Buttons -->
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a asp-action="Edit" asp-route-id="@item.DiscussionId" class="btn btn-primary btn-sm">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.DiscussionId" class="btn btn-info btn-sm">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.DiscussionId" class="btn btn-danger btn-sm">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
