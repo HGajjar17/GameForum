@@ -32,8 +32,9 @@ namespace GameForum.Controllers
         public async Task<IActionResult> GetDiscussion(int id)
         {
             var discussion = await _context.Discussion
-                                           .Include(d => d.Comments)
-                                           .FirstOrDefaultAsync(d => d.DiscussionId == id);
+                .Include(m => m.ApplicationUser)
+                .Include(d => d.Comments)
+                .FirstOrDefaultAsync(d => d.DiscussionId == id);
 
             if (discussion == null)
             {

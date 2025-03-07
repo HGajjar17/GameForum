@@ -18,6 +18,14 @@
                     <!-- Hidden fields -->
                     <input type="hidden" asp-for="DiscussionId" />
                     <input type="hidden" asp-for="ImageFilename" />
+                    <input type="hidden" asp-for="ApplicationUserId" />
+                    @* <input type="hidden" asp-for="CreateDate" /> *@
+
+                    ApplicationUserId
+
+                    <div class="mb-3 w-50">
+                        <img src="/photos/@Model.ImageFilename" alt="Thumbnail" class="img-thumbnail" />
+                    </div>
 
                     <!-- Title input -->
                     <div class="mb-3">

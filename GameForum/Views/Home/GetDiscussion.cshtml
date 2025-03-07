@@ -11,6 +11,31 @@
 
     <div class="card-body">
         <!-- Discussion Title and Meta Info -->
+
+        @* Added the Profile layout *@
+        
+        @if (Model.ApplicationUser != null)
+        {
+            <div class="d-flex">
+                @if (!string.IsNullOrEmpty(Model.ApplicationUser.ImageFilename))
+                {
+                    <div class="pe-2">
+                        <img src="~/profile_img/@Model.ApplicationUser.ImageFilename" alt="@Model.ApplicationUser.Name" class="profile-thumbnail" />
+                    </div>
+                }
+                <div>
+                    @Model.ApplicationUser.Name
+                    @if (Model.ApplicationUser.IsForHire == true)
+                    {
+                        <br />
+                        <span class="text-primary" style="font-size:0.9em">Available for hire <i class="fa-solid fa-circle-check"></i></span>
+                    }
+                </div>
+            </div>
+        }
+
+
+
         <h3>@Model.Title</h3>
         <p><strong>Created on:</strong> @Model.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</p>
 

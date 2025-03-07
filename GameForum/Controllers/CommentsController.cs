@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameForum.Data;
 using GameForum.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameForum.Controllers
 {
+    // only logged in users have access
+    [Authorize]
     public class CommentsController : Controller
     {
         private readonly GameForumContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommentsController(GameForumContext context)
+        public CommentsController(GameForumContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // Deleted the folowing action code
@@ -29,11 +35,28 @@ namespace GameForum.Controllers
         // -----------
 
         // GET: Comments/Create
-        public IActionResult Create(int? id)
+        public async Task<IActionResult> Create(int? id)
         {
+            // id = DiscussionId
             if (id == null)
             {
                 return NotFound();
+            }
+
+            // get the logged in user ID
+            var userId = _userManager.GetUserId(User);
+
+            var discussion = await _context.Discussion
+                .Where(m => m.ApplicationUserId == userId) // filter by user Id
+                .FirstOrDefaultAsync(m => m.DiscussionId == id);
+
+            if (discussion == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _context.Discussion.Remove(discussion);
             }
 
             // Pass DiscussionId to the view using ViewBag
@@ -49,6 +72,8 @@ namespace GameForum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CommentId,Content,CreateDate,DiscussionId")] Comment comment)
         {
+            // TO-Do embed the user ID in the form and validate
+
             if (ModelState.IsValid)
             {
                 // Set's the current date and Time

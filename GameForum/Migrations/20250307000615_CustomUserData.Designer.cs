@@ -4,6 +4,7 @@ using GameForum.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameForum.Migrations
 {
     [DbContext(typeof(GameForumContext))]
-    partial class GameForumContextModelSnapshot : ModelSnapshot
+    [Migration("20250307000615_CustomUserData")]
+    partial class CustomUserData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,10 +142,6 @@ namespace GameForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiscussionId"));
 
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -159,8 +158,6 @@ namespace GameForum.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DiscussionId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Discussion");
                 });
@@ -311,17 +308,6 @@ namespace GameForum.Migrations
                         .IsRequired();
 
                     b.Navigation("Discussion");
-                });
-
-            modelBuilder.Entity("GameForum.Models.Discussion", b =>
-                {
-                    b.HasOne("GameForum.Data.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

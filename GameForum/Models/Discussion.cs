@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using GameForum.Data;
 
 namespace GameForum.Models
 {
@@ -30,6 +31,11 @@ namespace GameForum.Models
         public DateTime CreateDate { get; set; } = DateTime.Now;
 
         // Navigation property: List of comments for this discussion
-        public ICollection<Comment>? Comments { get; set; } // nullable
+        public ICollection<Comment>? Comments { get; set; } // nullable!!
+
+        // Foreign key (AspNetUsers table)
+        public string ApplicationUserId { get; set; } = string.Empty;
+        // Navigation property
+        public ApplicationUser? ApplicationUser { get; set; } // nullable!!!
     }
 }

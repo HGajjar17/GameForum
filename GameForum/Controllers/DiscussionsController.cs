@@ -7,23 +7,33 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameForum.Data;
 using GameForum.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameForum.Controllers
 {
+    // only logged in users have access
+    [Authorize]
     public class DiscussionsController : Controller
     {
         private readonly GameForumContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         // Constructor
-        public DiscussionsController(GameForumContext context)
+        public DiscussionsController(GameForumContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: Discussions
+        // GET: Discussions -> My Discussions get all photos by user id
         public async Task<IActionResult> Index()
         {
-            var discussions = await _context.Discussion.ToListAsync();
+            var userId = _userManager.GetUserId(User);
+
+            var discussions = await _context.Discussion
+                .Where(m => m.ApplicationUserId == userId) // filter by user Id
+                .ToListAsync();
 
             return View(discussions);
         }
@@ -36,8 +46,12 @@ namespace GameForum.Controllers
                 return NotFound();
             }
 
+            var userId = _userManager.GetUserId(User);
+
             var discussion = await _context.Discussion
+                .Where(m => m.ApplicationUserId == userId)
                 .FirstOrDefaultAsync(m => m.DiscussionId == id);
+
             if (discussion == null)
             {
                 return NotFound();
@@ -65,6 +79,8 @@ namespace GameForum.Controllers
             // rename the uploaded file to a guid (unique filename). Set before photo saved in database.
             discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile?.FileName);
 
+            // Set the user ID of the person Logged in.
+            discussion.ApplicationUserId = _userManager.GetUserId(User);
 
             if (ModelState.IsValid)
             {
@@ -94,8 +110,13 @@ namespace GameForum.Controllers
                 return NotFound();
             }
 
+            var userId = _userManager.GetUserId(User);
+
             // Include related comments when fetching the discussion
-            var discussion = await _context.Discussion.Include(m => m.Comments).FirstOrDefaultAsync(m => m.DiscussionId == id);
+            var discussion = await _context.Discussion
+                .Include(m => m.Comments)                  // Include the Comment List
+                .Where(m => m.ApplicationUserId == userId) // filter by user Id
+                .FirstOrDefaultAsync(m => m.DiscussionId == id);
 
 
             if (discussion == null)
@@ -110,7 +131,7 @@ namespace GameForum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFilename")] Discussion discussion)
+        public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFilename,ApplicationUserId")] Discussion discussion)
         {
             if (id != discussion.DiscussionId)
             {
@@ -158,8 +179,13 @@ namespace GameForum.Controllers
                 return NotFound();
             }
 
+            // get the logged in user ID
+            var userId = _userManager.GetUserId(User);
+
             var discussion = await _context.Discussion
+                .Where(m => m.ApplicationUserId == userId) // filter by user Id
                 .FirstOrDefaultAsync(m => m.DiscussionId == id);
+
             if (discussion == null)
             {
                 return NotFound();
@@ -173,8 +199,20 @@ namespace GameForum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var discussion = await _context.Discussion.FindAsync(id);
-            if (discussion != null)
+            //var discussion = await _context.Discussion.FindAsync(id);
+            
+            // get the logged in user ID
+            var userId = _userManager.GetUserId(User);
+
+            var discussion = await _context.Discussion
+                .Where(m => m.ApplicationUserId == userId) // filter by user Id
+                .FirstOrDefaultAsync(m => m.DiscussionId == id);
+
+            if (discussion == null)
+            {
+                return NotFound();
+            }
+            else
             {
                 _context.Discussion.Remove(discussion);
             }
