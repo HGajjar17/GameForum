@@ -64,8 +64,8 @@ namespace GameForum.Areas.Identity.Pages.Account.Manage
 
             public string Location { get; set; }
 
-            [Display(Name = "Available for Hire")]
-            public bool IsForHire { get; set; }
+            //[Display(Name = "Available for Hire")]
+            //public bool IsForHire { get; set; }
 
             public string ImageFilename { get; set; }
 
@@ -100,7 +100,7 @@ namespace GameForum.Areas.Identity.Pages.Account.Manage
                 Name = user.Name,
                 Bio = user.Bio,
                 Location = user.Location,
-                IsForHire = user.IsForHire,
+                //IsForHire = user.IsForHire,
                 ImageFilename = user.ImageFilename,
                 /////////////////////////////////////////
                 /// END: ApplicationUser custom fields
@@ -165,10 +165,10 @@ namespace GameForum.Areas.Identity.Pages.Account.Manage
                 user.Location = Input.Location;
             }
 
-            if (Input.IsForHire != user.IsForHire)
-            {
-                user.IsForHire = Input.IsForHire;
-            }
+            //if (Input.IsForHire != user.IsForHire)
+            //{
+            //    user.IsForHire = Input.IsForHire;
+            //}
 
             // save the uploaded profile picture in db and folder
             if (Input.ImageFile != null)

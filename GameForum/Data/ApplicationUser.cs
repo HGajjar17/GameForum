@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GameForum.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameForum.Data
 {
@@ -13,10 +14,13 @@ namespace GameForum.Data
         [PersonalData]
         public string Location { get; set; } = string.Empty;
 
-        [PersonalData]
-        public bool IsForHire { get; set; } = false;
+        //[PersonalData]
+        //public bool IsForHire { get; set; } = false;
 
         [PersonalData]
         public string ImageFilename { get; set; } = string.Empty;
+
+        // Navigation Property
+        public virtual ICollection<Discussion> Discussions { get; set; }
     }
 }

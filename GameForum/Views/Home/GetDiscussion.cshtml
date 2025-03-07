@@ -17,20 +17,38 @@
         @if (Model.ApplicationUser != null)
         {
             <div class="d-flex">
-                @if (!string.IsNullOrEmpty(Model.ApplicationUser.ImageFilename))
+                @if (Model.ApplicationUser != null)
                 {
-                    <div class="pe-2">
-                        <img src="~/profile_img/@Model.ApplicationUser.ImageFilename" alt="@Model.ApplicationUser.Name" class="profile-thumbnail" />
+                    <div class="d-flex align-items-center">
+                        @if (!string.IsNullOrEmpty(Model.ApplicationUser.ImageFilename))
+                        {
+                            <div class="pe-2">
+                                <img src="~/profile_img/@Model.ApplicationUser.ImageFilename" alt="@Model.ApplicationUser.Name" class="profile-thumbnail" />
+                            </div>
+                        }
+                        <div>
+                            <a href="@Url.Action("Profile", "Home", new { id = Model.ApplicationUserId })" class="fw-bold text-dark">
+                                @Model.ApplicationUser.Name
+                            </a>
+                            @* @if (Model.ApplicationUser.IsForHire == true) *@
+                            @* { *@
+                            @*     <br /> *@
+                            @*     <span class="text-primary" style="font-size:0.9em"> *@
+                            @*         Available for hire <i class="fa-solid fa-circle-check"></i> *@
+                            @*     </span> *@
+                            @* } *@
+                        </div>
                     </div>
                 }
-                <div>
-                    @Model.ApplicationUser.Name
-                    @if (Model.ApplicationUser.IsForHire == true)
-                    {
-                        <br />
-                        <span class="text-primary" style="font-size:0.9em">Available for hire <i class="fa-solid fa-circle-check"></i></span>
-                    }
-                </div>
+
+                @* <div> *@
+                @*     @Model.ApplicationUser.Name *@
+                @*     @if (Model.ApplicationUser.IsForHire == true) *@
+                @*     { *@
+                @*         <br /> *@
+                @*         <span class="text-primary" style="font-size:0.9em">Available for hire <i class="fa-solid fa-circle-check"></i></span> *@
+                @*     } *@
+                @* </div> *@
             </div>
         }
 

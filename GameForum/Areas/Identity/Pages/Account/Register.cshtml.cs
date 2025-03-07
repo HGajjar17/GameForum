@@ -84,8 +84,8 @@ namespace GameForum.Areas.Identity.Pages.Account
 
             public string Location { get; set; }
 
-            [Display(Name = "Available for Hire")]
-            public bool IsForHire { get; set; }
+            //[Display(Name = "Available for Hire")]
+            //public bool IsForHire { get; set; }
 
             [Display(Name = "Profile Picture")]
             public IFormFile ImageFile { get; set; }
@@ -145,7 +145,7 @@ namespace GameForum.Areas.Identity.Pages.Account
                 user.Name = Input.Name;
                 user.Bio = Input.Bio;
                 user.Location = Input.Location;
-                user.IsForHire = Input.IsForHire;
+                //user.IsForHire = Input.IsForHire;
 
                 // save the uploaded profile picture in db and folder
                 if (Input.ImageFile != null)
