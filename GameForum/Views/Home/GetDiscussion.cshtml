@@ -30,29 +30,11 @@
                             <a href="@Url.Action("Profile", "Home", new { id = Model.ApplicationUserId })" class="fw-bold text-dark">
                                 @Model.ApplicationUser.Name
                             </a>
-                            @* @if (Model.ApplicationUser.IsForHire == true) *@
-                            @* { *@
-                            @*     <br /> *@
-                            @*     <span class="text-primary" style="font-size:0.9em"> *@
-                            @*         Available for hire <i class="fa-solid fa-circle-check"></i> *@
-                            @*     </span> *@
-                            @* } *@
                         </div>
                     </div>
                 }
-
-                @* <div> *@
-                @*     @Model.ApplicationUser.Name *@
-                @*     @if (Model.ApplicationUser.IsForHire == true) *@
-                @*     { *@
-                @*         <br /> *@
-                @*         <span class="text-primary" style="font-size:0.9em">Available for hire <i class="fa-solid fa-circle-check"></i></span> *@
-                @*     } *@
-                @* </div> *@
             </div>
         }
-
-
 
         <h3>@Model.Title</h3>
         <p><strong>Created on:</strong> @Model.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</p>
@@ -73,6 +55,19 @@
             @foreach (var comment in Model.Comments ?? new List<GameForum.Models.Comment>())
             {
                 <div class="list-group-item border rounded mb-2 p-3">
+                    <div class="d-flex align-items-center mb-2">
+                        @if (comment.ApplicationUser != null)
+                        {
+                            @if (!string.IsNullOrEmpty(comment.ApplicationUser.ImageFilename))
+                            {
+                                <img src="~/profile_img/@comment.ApplicationUser.ImageFilename"
+                                     alt="@comment.ApplicationUser.Name"
+                                     class="rounded-circle me-2"
+                                     style="width: 30px; height: 30px; object-fit: cover;" />
+                            }
+                            <strong class="text-dark">@comment.ApplicationUser.Name</strong>
+                        }
+                    </div>
                     <p>@comment.Content</p>
                     <small class="text-muted">Posted on: @comment.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</small>
                 </div>

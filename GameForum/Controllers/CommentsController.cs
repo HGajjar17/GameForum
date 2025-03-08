@@ -44,20 +44,21 @@ namespace GameForum.Controllers
             }
 
             // get the logged in user ID
-            var userId = _userManager.GetUserId(User);
+            //var userId = _userManager.GetUserId(User);
 
+            // Fetch the discussion without filtering by user
             var discussion = await _context.Discussion
-                .Where(m => m.ApplicationUserId == userId) // filter by user Id
+                //.Where(m => m.ApplicationUserId == userId) // filter by user Id
                 .FirstOrDefaultAsync(m => m.DiscussionId == id);
 
             if (discussion == null)
             {
-                return NotFound();
+                return RedirectToAction("AccessDenied", "Home");
             }
-            else
-            {
-                _context.Discussion.Remove(discussion);
-            }
+            //else
+            //{
+            //    _context.Discussion.Remove(discussion);
+            //}
 
             // Pass DiscussionId to the view using ViewBag
             ViewData["DiscussionId"] = id;
@@ -78,6 +79,12 @@ namespace GameForum.Controllers
             {
                 // Set's the current date and Time
                 comment.CreateDate = DateTime.Now;
+
+                // ✅ If user is logged in, assign their ID
+                if (User.Identity.IsAuthenticated)
+                {
+                    comment.ApplicationUserId = _userManager.GetUserId(User);
+                }
 
                 _context.Add(comment);
                 await _context.SaveChangesAsync();

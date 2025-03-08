@@ -54,7 +54,7 @@ namespace GameForum.Controllers
 
             if (discussion == null)
             {
-                return NotFound();
+                return RedirectToAction("AccessDenied", "Home");
             }
 
             return View(discussion);
@@ -77,7 +77,12 @@ namespace GameForum.Controllers
             discussion.CreateDate = DateTime.Now;
 
             // rename the uploaded file to a guid (unique filename). Set before photo saved in database.
-            discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile?.FileName);
+            //discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile?.FileName);
+
+            // Set the image filename to a default placeholder if no image is uploaded
+            discussion.ImageFilename = discussion.ImageFile != null
+                ? Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile?.FileName)
+                : "placeholder.png"; // Placeholder image filename
 
             // Set the user ID of the person Logged in.
             discussion.ApplicationUserId = _userManager.GetUserId(User);
@@ -118,10 +123,9 @@ namespace GameForum.Controllers
                 .Where(m => m.ApplicationUserId == userId) // filter by user Id
                 .FirstOrDefaultAsync(m => m.DiscussionId == id);
 
-
             if (discussion == null)
             {
-                return NotFound();
+                return RedirectToAction("AccessDenied", "Home");
             }
             return View(discussion);
         }
@@ -188,7 +192,7 @@ namespace GameForum.Controllers
 
             if (discussion == null)
             {
-                return NotFound();
+                return RedirectToAction("AccessDenied", "Home");
             }
 
             return View(discussion);
@@ -210,7 +214,7 @@ namespace GameForum.Controllers
 
             if (discussion == null)
             {
-                return NotFound();
+                return RedirectToAction("AccessDenied", "Home");
             }
             else
             {

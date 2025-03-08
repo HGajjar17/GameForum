@@ -23,9 +23,11 @@ namespace GameForum.Controllers
         public async Task<IActionResult> Index()
         {
             // get the discussion from the database
-            var discussions = await _context.Discussion.Include(d => d.Comments) // Egarly load the Comments
-                                            .OrderByDescending(d => d.CreateDate)
-                                            .ToListAsync();
+            var discussions = await _context.Discussion
+                .Include(m => m.ApplicationUser)
+                .Include(d => d.Comments) // Egarly load the Comments
+                .OrderByDescending(d => d.CreateDate)
+                .ToListAsync();
 
             return View(discussions);
         }
@@ -37,11 +39,12 @@ namespace GameForum.Controllers
             var discussion = await _context.Discussion
                 .Include(m => m.ApplicationUser)
                 .Include(d => d.Comments)
+                .ThenInclude(c => c.ApplicationUser)
                 .FirstOrDefaultAsync(d => d.DiscussionId == id);
 
             if (discussion == null)
             {
-                return NotFound();
+                return RedirectToAction("AccessDenied", "Home");
             }
 
             return View(discussion);
@@ -76,11 +79,20 @@ namespace GameForum.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("AccessDenied", "Home");
             }
 
             return View(user); // Pass user details to the view
         }
+
+
+        
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+
 
 
     }
