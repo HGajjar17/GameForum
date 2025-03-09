@@ -8,7 +8,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <!-- Profile Card -->
-            <div class="card shadow-lg border-0">
+            <div class="card shadow-lg border-0 rounded-3">
                 <div class="card-body text-center p-4">
                     <!-- Profile Image -->
                     <img src="@(string.IsNullOrEmpty(Model.ImageFilename) ? "/images/Deault_Placeholder.jpg" : Url.Content("~/profile_img/" + Model.ImageFilename))"
@@ -26,15 +26,42 @@
                     <!-- Bio -->
                     @if (!string.IsNullOrEmpty(Model.Bio))
                     {
-                        <p class="card-text">@Model.Bio</p>
+                        <p class="card-text text-muted">@Model.Bio</p>
                     }
                 </div>
+            </div>
+
+            <!-- User Discussions -->
+            <div class="card mt-4 shadow-sm border-0 rounded-3">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">Discussions by @Model.Name</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @if (Model.Discussions.Any())
+                    {
+                        @foreach (var discussion in Model.Discussions)
+                        {
+                            <li class="list-group-item">
+                                <a href="@Url.Action("GetDiscussion", "Home", new { id = discussion.DiscussionId })" class="discussion-link">
+                                    @discussion.Title
+                                </a>
+                                <br />
+                                <small class="text-muted">Posted on: @discussion.CreateDate.ToString("MMM dd, yyyy")</small>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-center text-muted">No discussions yet.</li>
+                    }
+                </ul>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+    /* Profile Picture Styling */
     .profile-pic {
         width: 150px;
         height: 150px;
@@ -43,11 +70,29 @@
         border: 3px solid #ddd;
     }
 
-    .list-group-item {
-        border: none;
+    /* Profile Card Styling */
+    .card {
+        border-radius: 12px;
     }
 
-        .list-group-item a:hover {
+    /* Discussion List */
+    .list-group-item {
+        border: none;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+
+    .discussion-link {
+        font-weight: 600;
+        text-decoration: none;
+        color: #343a40;
+        transition: color 0.2s ease-in-out;
+    }
+
+        .discussion-link:hover {
             color: #007bff;
             text-decoration: underline;
         }
