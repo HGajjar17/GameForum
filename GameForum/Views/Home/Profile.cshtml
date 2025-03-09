@@ -4,48 +4,51 @@
     ViewData["Title"] = $"{Model.Name}'s Profile";
 }
 
-<h2>@Model.Name's Profile</h2>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Profile Card -->
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center p-4">
+                    <!-- Profile Image -->
+                    <img src="@(string.IsNullOrEmpty(Model.ImageFilename) ? "/images/Deault_Placeholder.jpg" : Url.Content("~/profile_img/" + Model.ImageFilename))"
+                         alt="@Model.Name's Profile Picture" class="profile-pic mb-3" />
 
-<div class="profile-container">
-    <img src="~/profile-pictures/@(Model.ImageFilename ?? "default.png")"
-         alt="Profile Picture" class="profile-pic" />
-    <p><strong>Name:</strong> @Model.Name</p>
-    <p><strong>Location:</strong> @Model.Location</p>
-    <p><strong>Bio:</strong> @Model.Bio</p>
+                    <!-- User Name -->
+                    <h2 class="fw-bold">@Model.Name</h2>
+
+                    <!-- Location -->
+                    @if (!string.IsNullOrEmpty(Model.Location))
+                    {
+                        <p class="text-muted"><i class="fas fa-map-marker-alt"></i> @Model.Location</p>
+                    }
+
+                    <!-- Bio -->
+                    @if (!string.IsNullOrEmpty(Model.Bio))
+                    {
+                        <p class="card-text">@Model.Bio</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<h3>Discussion Threads</h3>
-@if (Model.Discussions is List<Discussion> discussions && discussions.Any())
-{
-    <ul>
-        @foreach (var discussion in discussions)
-        {
-            <li>
-                <a asp-page="/Discussion" asp-route-id="@discussion.DiscussionId">
-                    @discussion.Title
-                </a> - @discussion.CreateDate.ToShortDateString()
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>No discussions yet.</p>
-}
-
 <style>
-    .profile-container {
-        border: 1px solid #ddd;
-        padding: 15px;
-        border-radius: 8px;
-        max-width: 400px;
-    }
-
     .profile-pic {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
         object-fit: cover;
-        margin-bottom: 10px;
+        border: 3px solid #ddd;
     }
+
+    .list-group-item {
+        border: none;
+    }
+
+        .list-group-item a:hover {
+            color: #007bff;
+            text-decoration: underline;
+        }
 </style>

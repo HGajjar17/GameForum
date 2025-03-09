@@ -25,11 +25,18 @@
                         <!-- Owner Details -->
                         @if (discussion.ApplicationUser != null)
                         {
-                            <div class="mt-1 mx-3 text-muted">
-                                <i class="fa-solid fa-user"></i> Posted by:
-                                <a href="@Url.Action("Profile", "Home", new { id = discussion.ApplicationUser.Id })">
-                                    @discussion.ApplicationUser.Name
-                                </a>
+                            <div class="d-flex align-items-center mx-3 mt-1 text-muted">
+                                <img src="@(string.IsNullOrEmpty(discussion.ApplicationUser.ImageFilename) ? "/images/Deault_Placeholder.jpg" : Url.Content("~/profile_img/" + discussion.ApplicationUser.ImageFilename))"
+                                     alt="@discussion.ApplicationUser.Name"
+                                     class="rounded-circle me-2"
+                                     style="width: 30px; height: 30px; object-fit: cover;" />
+
+                                <span>
+                                    <a href="@Url.Action("Profile", "Home", new { id = discussion.ApplicationUser.Id })"
+                                       class="fw-bold text-dark text-decoration-none link-hover">
+                                        @discussion.ApplicationUser.Name
+                                    </a>
+                                </span>
                             </div>
                         }
                         <a href="@Url.Action("GetDiscussion", "Home", new { id = discussion.DiscussionId })" class="list-group-item d-flex align-items-center py-3 discussion-item">
@@ -80,3 +87,10 @@
         </div>
     </div>
 </div>
+
+<style>
+    .link-hover:hover {
+        color: #007bff !important; /* Bootstrap primary color */
+        text-decoration: underline;
+    }
+</style>

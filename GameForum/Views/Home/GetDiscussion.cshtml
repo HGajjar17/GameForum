@@ -1,88 +1,111 @@
 ﻿@model GameForum.Models.Discussion
 
 @{
-    ViewBag.Title = @Model.Title;
+    ViewBag.Title = Model.Title;
 }
 
-<div class="card mb-4">
-    <div class="card-header bg-dark text-white">
-        <h1>Discussion Details</h1>
-    </div>
+<div class="container mt-4">
+    <div class="card shadow-lg border-0">
+        <!-- Header -->
+        <div class="card-header bg-dark text-white text-center">
+            <h1 class="mb-0">Discussion Details</h1>
+        </div>
 
-    <div class="card-body">
-        <!-- Discussion Title and Meta Info -->
-
-        @* Added the Profile layout *@
-        
-        @if (Model.ApplicationUser != null)
-        {
-            <div class="d-flex">
-                @if (Model.ApplicationUser != null)
-                {
-                    <div class="d-flex align-items-center">
-                        @if (!string.IsNullOrEmpty(Model.ApplicationUser.ImageFilename))
-                        {
-                            <div class="pe-2">
-                                <img src="~/profile_img/@Model.ApplicationUser.ImageFilename" alt="@Model.ApplicationUser.Name" class="profile-thumbnail" />
-                            </div>
-                        }
-                        <div>
-                            <a href="@Url.Action("Profile", "Home", new { id = Model.ApplicationUserId })" class="fw-bold text-dark">
-                                @Model.ApplicationUser.Name
-                            </a>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-
-        <h3>@Model.Title</h3>
-        <p><strong>Created on:</strong> @Model.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</p>
-
-        <!-- Image Display -->
-        @if (!string.IsNullOrEmpty(Model.ImageFilename))
-        {
-            <img src="~/photos/@Model.ImageFilename" alt="@Model.Title" class="img-thumbnail mb-3" style="max-width: 1000px;" />
-        }
-
-        <!-- Content -->
-        <p>@Model.Content</p>
-
-        <!-- Comments Section -->
-        <hr />
-        <h4>Comments: @Model.Comments?.Count()</h4>
-        <div class="list-group mb-3">
-            @foreach (var comment in Model.Comments ?? new List<GameForum.Models.Comment>())
+        <!-- Card Body -->
+        <div class="card-body">
+            <!-- Discussion Author -->
+            @if (Model.ApplicationUser != null)
             {
-                <div class="list-group-item border rounded mb-2 p-3">
-                    <div class="d-flex align-items-center mb-2">
-                        @if (comment.ApplicationUser != null)
-                        {
-                            @if (!string.IsNullOrEmpty(comment.ApplicationUser.ImageFilename))
-                            {
-                                <img src="~/profile_img/@comment.ApplicationUser.ImageFilename"
-                                     alt="@comment.ApplicationUser.Name"
-                                     class="rounded-circle me-2"
-                                     style="width: 30px; height: 30px; object-fit: cover;" />
-                            }
-                            <strong class="text-dark">@comment.ApplicationUser.Name</strong>
-                        }
-                    </div>
-                    <p>@comment.Content</p>
-                    <small class="text-muted">Posted on: @comment.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</small>
+                <div class="d-flex align-items-center mb-3">
+                    <img src="@(string.IsNullOrEmpty(Model.ApplicationUser.ImageFilename) ? "/images/Deault_Placeholder.jpg" : Url.Content("~/profile_img/" + Model.ApplicationUser.ImageFilename))"
+                         alt="@Model.ApplicationUser.Name"
+                         class="profile-thumbnail rounded-circle me-3 border" />
+
+                    <a href="@Url.Action("Profile", "Home", new { id = Model.ApplicationUserId })"
+                       class="fw-bold text-dark text-decoration-none link-hover">
+                        @Model.ApplicationUser.Name
+                    </a>
                 </div>
             }
-        </div>
 
-        <!-- Add Comment Button -->
-        <div class="mb-3 d-flex gap-2">
-            <a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="btn btn-primary">
-                <i class="fa-solid fa-plus"></i> Add Comment
-            </a>
-            <a asp-action="Index" class="btn btn-secondary">
-                <i class="fa-solid fa-arrow-left"></i> Back
-            </a>
-        </div>
+            <!-- Title & Meta -->
+            <h3 class="fw-bold">@Model.Title</h3>
+            <p class="text-muted"><i class="fa-regular fa-calendar-alt"></i> Created on: @Model.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</p>
 
+            <!-- Image Display -->
+            @if (!string.IsNullOrEmpty(Model.ImageFilename))
+            {
+                <div class="text-center">
+                    <img src="~/photos/@Model.ImageFilename" alt="@Model.Title" class="img-fluid rounded shadow-sm mb-3" style="max-width: 800px;" />
+                </div>
+            }
+
+            <!-- Discussion Content -->
+            <p class="fs-5">@Model.Content</p>
+
+            <!-- Comments Section -->
+            <hr />
+            <h4 class="fw-bold"><i class="fa-regular fa-comments"></i> Comments (@Model.Comments?.Count())</h4>
+
+            <div class="list-group mb-4">
+                @if (Model.Comments != null && Model.Comments.Any())
+                {
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <div class="list-group-item border rounded mb-3 p-3 shadow-sm">
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="@(string.IsNullOrEmpty(comment.ApplicationUser.ImageFilename) ? "/images/Deault_Placeholder.jpg" : Url.Content("~/profile_img/" + comment.ApplicationUser.ImageFilename))"
+                                     alt="@comment.ApplicationUser.Name"
+                                     class="rounded-circle border me-2"
+                                     style="width: 40px; height: 40px; object-fit: cover;" />
+
+                                <a href="@Url.Action("Profile", "Home", new { id = comment.ApplicationUser.Id })"
+                                   class="fw-bold text-dark text-decoration-none link-hover">
+                                    @comment.ApplicationUser.Name
+                                </a>
+                            </div>
+                            <p class="mb-2">@comment.Content</p>
+                            <small class="text-muted">Posted on: @comment.CreateDate.ToString("MMM dd, yyyy hh:mm tt")</small>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">No comments yet.</p>
+                }
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2">
+                <a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="btn btn-primary">
+                    <i class="fa-solid fa-plus"></i> Add Comment
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Additional Styling -->
+<style>
+    .profile-thumbnail {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+
+    .link-hover:hover {
+        color: #007bff !important;
+        text-decoration: underline;
+    }
+
+    .list-group-item {
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+        .list-group-item:hover {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+</style>
