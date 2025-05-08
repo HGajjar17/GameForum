@@ -1,6 +1,10 @@
 # GameForum
 A web-based discussion forum where users can create, edit, and participate in discussions related to games. Built using ASP.NET Core MVC, Entity Framework, and Bootstrap.
 
+# Mockup
+![image](https://github.com/user-attachments/assets/2c82bfd9-eb19-4902-86de-1596a65caa63)
+
+
 # Features
 - Create, edit, view, and delete discussions.
 - Users can upload and manage discussion images.
